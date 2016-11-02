@@ -1,0 +1,22 @@
+{
+  "variables": {
+    "aws_access_key": null,
+    "aws_secret_key": null,
+    "newrelic_license_key": null
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-west-2",
+    "source_ami": "ami-5ec1673e",
+    "instance_type": "t2.medium",
+    "ssh_username": "ec2-user",
+    "ami_name": "aws-linux nr-infra {{timestamp}}"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "script": "install-infra.sh",
+    "environment_vars": [ "NEWRELIC_LICENSE_KEY={{ user `newrelic_license_key` }}" ]
+  }]
+}
